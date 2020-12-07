@@ -66,13 +66,12 @@ const Dashboard: React.FC = () => {
           };
         });
         setAppointments(appointmentsFormatted);
-        console.log(response.data);
       });
   }, [selectDate]);
 
   useEffect(() => {
     api
-      .get(`/providers/${user.id}/month_availability`, {
+      .get(`/providers/${user.id}/month-availability`, {
         params: {
           year: selectMonth.getFullYear(),
           month: selectMonth.getMonth() + 1,
@@ -112,9 +111,14 @@ const Dashboard: React.FC = () => {
   }, [selectDate]);
 
   const selectedWeekDay = useMemo(() => {
-    return format(selectDate, 'cccc', {
+    let weekday = format(selectDate, 'cccc', {
       locale: ptBR,
     });
+    weekday = weekday.charAt(0).toUpperCase() + weekday.slice(1);
+    if (selectDate.getDay() !== 6 && selectDate.getDay() !== 0) {
+      return `${weekday}-feira`;
+    }
+    return weekday;
   }, [selectDate]);
 
   const morningAppointments = useMemo(() => {

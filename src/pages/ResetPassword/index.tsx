@@ -43,12 +43,12 @@ const ResetPassword: React.FC = () => {
           abortEarly: false,
         });
 
-        const { password, passwordConfirmation } = data;
-        const token = location.search.replace('?token=', '');
-
-        if (!token) {
+        if (!location.search) {
           throw new Error();
         }
+
+        const { password, passwordConfirmation } = data;
+        const token = location.search.replace('?token=', '');
 
         await api.post('password/reset', {
           password,
@@ -68,6 +68,7 @@ const ResetPassword: React.FC = () => {
           formRef.current?.setErrors(errors);
           return;
         }
+
         addToast({
           type: 'error',
           title: 'Erro ao resetar senha',
